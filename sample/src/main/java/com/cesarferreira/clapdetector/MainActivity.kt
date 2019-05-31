@@ -22,8 +22,7 @@ class MainActivity : AppCompatActivity() {
         R.raw.meme4,
         R.raw.meme5
     )
-    internal var mp: MediaPlayer? = null
-    // internal var claps = 0
+    private var mp: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +86,7 @@ class MainActivity : AppCompatActivity() {
     private fun playAudio() {
         val rnd = Random().nextInt(files.size)
 
-        if (mp != null && !mp!!.isPlaying /*&& clapDetector.claps >= 2*/) {
+        if (mp != null && !mp!!.isPlaying) {
             mp!!.release()
             mp = MediaPlayer.create(this, files[rnd])
             mp!!.setOnCompletionListener { modifyText() }

@@ -1,6 +1,7 @@
 package com.cesarferreira.clapdetector.library
 
 import android.util.Log
+
 import be.tarsos.dsp.AudioDispatcher
 import be.tarsos.dsp.io.android.AudioDispatcherFactory
 import be.tarsos.dsp.onsets.OnsetHandler
