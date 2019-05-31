@@ -33,7 +33,7 @@ class ClapDetector {
         Thread(dispatcher, "Audio Dispatcher").start()
     }
 
-    private fun cancel() {
+    fun cancel() {
         dispatcher.stop()
     }
 
