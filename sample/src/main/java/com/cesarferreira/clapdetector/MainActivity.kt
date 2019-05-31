@@ -1,6 +1,7 @@
 package com.cesarferreira.clapdetector
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.os.Build
@@ -10,12 +11,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.cesarferreira.clapdetector.library.ClapDetector
-import com.hzhudev.clap_detection.R
 import java.util.Random
 
 class MainActivity : AppCompatActivity() {
 
-    internal var files = intArrayOf(
+    private var files = intArrayOf(
         R.raw.meme1,
         R.raw.meme2,
         R.raw.meme3,
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         modifyText()
     }
 
-    fun startRecording() {
+    private fun startRecording() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(
                     this,
@@ -75,32 +75,27 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    val clapDetector = ClapDetector()
+    private val clapDetector = ClapDetector()
 
     private fun startAudioDispatcher() {
         clapDetector.detectClapAnd {
             playAudio()
+            modifyText()
         }
     }
 
-    fun playAudio() {
+    private fun playAudio() {
         val rnd = Random().nextInt(files.size)
-
-        // if (mp != null && !mp!!.isPlaying) {
-        //dont want to pick up phone audio
-        // claps++
-        // }
 
         if (mp != null && !mp!!.isPlaying /*&& clapDetector.claps >= 2*/) {
             mp!!.release()
             mp = MediaPlayer.create(this, files[rnd])
             mp!!.setOnCompletionListener { modifyText() }
             mp!!.start()
-            // clapDetector.claps = 0
         }
-        modifyText()
     }
 
+    @SuppressLint("SetTextI18n")
     fun modifyText() {
 
         runOnUiThread {
@@ -118,7 +113,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
 
-        private val REQUEST_AUDIO_PERMISSION_RESULT = 1
+        private const val REQUEST_AUDIO_PERMISSION_RESULT = 1
     }
 }
 

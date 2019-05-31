@@ -1,5 +1,6 @@
 package com.cesarferreira.clapdetector.library
 
+import be.tarsos.dsp.AudioDispatcher
 import be.tarsos.dsp.io.android.AudioDispatcherFactory
 import be.tarsos.dsp.onsets.OnsetHandler
 import be.tarsos.dsp.onsets.PercussionOnsetDetector
@@ -7,9 +8,10 @@ import be.tarsos.dsp.onsets.PercussionOnsetDetector
 class ClapDetector {
 
     var claps = 0
+    private lateinit var dispatcher: AudioDispatcher
 
     fun detectClapAnd(tapThreshold: Int = 2, action: () -> (Unit)) {
-        val dispatcher = AudioDispatcherFactory.fromDefaultMicrophone(22050, 1024, 0)
+        dispatcher = AudioDispatcherFactory.fromDefaultMicrophone(22050, 1024, 0)
         val threshold = 12.0
         val sensitivity = 50.0
         val mPercussionDetector = PercussionOnsetDetector(
@@ -29,6 +31,10 @@ class ClapDetector {
         )
         dispatcher.addAudioProcessor(mPercussionDetector)
         Thread(dispatcher, "Audio Dispatcher").start()
+    }
+
+    private fun cancel() {
+        dispatcher.stop()
     }
 
     private fun resetClaps() {
